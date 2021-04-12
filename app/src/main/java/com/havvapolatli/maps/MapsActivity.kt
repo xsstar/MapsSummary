@@ -40,34 +40,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-   //uzun tıklanınca nolacak bağlantı sağlıyor setOnMapLongClickListener
+   
         mMap.setOnMapLongClickListener(dinleyici)
 
-        //Latitude:Enlem
-        //Longitude:Boylam
-        //39.9258549,32.843301
+        
 
        /* val ankara = LatLng(39.9258549,32.843301)
         mMap.addMarker(MarkerOptions().position(ankara).title("Ankara Anıtkabir"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ankara,15f))*/
 
-         //casting -> as >amaç Any olan bir objeyi istenilen şekilde döndürebilmek
+         
        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         locationListener = object : LocationListener{
 
             override fun onLocationChanged(location: Location) {
-                //lokasyon, konum değişince yapılacak işlemler fonks-konumu da veriyor!
+                
 
-               // println(location.latitude)    //LogCat de konumu çektik> enlem
-               // println(location.longitude)     //LogCat de konumu çektik > boylam
-
-                mMap.clear() //önceki konumları siler
+                mMap.clear() 
                 val guncelKonum = LatLng(location.latitude,location.longitude)
                 mMap.addMarker(MarkerOptions().position(guncelKonum).title("Guncel Konumunuz"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(guncelKonum,15f))
 
-                // bilinen koordinatları adrese cevirerek almak
+               
 
                 val geocoder = Geocoder(this@MapsActivity, Locale.getDefault())
 
@@ -85,16 +80,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            //Yukarda izin verilmemiş,İzin isteyeceğiz.İzni aşağıdaki kodla alıyoruz!
+           
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
 
         }else{
-            //izin zaten verilmişse
+           
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1f,locationListener)
-            //son bilinen konumu almak
+         
             val sonBilinenKonum = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (sonBilinenKonum != null){
-                //sonBilinenKonum location olarak geliyor yani adres,aşagıda kodda onu letlng çevirerek alıcaz
+              
                 val sonBilinenLatLng = LatLng(sonBilinenKonum.latitude,sonBilinenKonum.longitude)
                 mMap.addMarker(MarkerOptions().position(sonBilinenLatLng).title("Son Bilinen Konumunuz"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sonBilinenLatLng,15f))
@@ -110,7 +105,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      if (requestCode == 1){
          if (grantResults.size > 0){
              if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                 //izin verildi
+                 
                  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1f,locationListener)
 
              }
@@ -121,10 +116,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-   //tıklanmayı algılayan fonksiyon
+   
     val dinleyici = object : GoogleMap.OnMapLongClickListener {
         override fun onMapLongClick(p0: LatLng?) {
-  //tıklandığında ne olacak
+  
              mMap.clear()
             val geocoder = Geocoder(this@MapsActivity,Locale.getDefault())
 
